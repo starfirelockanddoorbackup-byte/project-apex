@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PROJECT APEX | Matthews Operations Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Gotham Noir Atmospheric Palette */
+      --bg-void: #070a08;
+      --bg-asphalt: #0d120f;
+      --bg-surface: #121915;
+      --bg-card: #17211b;
+      --border-dark: #1e2c24;
+      --border-steel: #2a3d32;
+      --border-brass: #5c4520;
+      
+      --amber-glow: #d69738;
+      --amber-dim: #946723;
+      --teal-surveillance: #274f46;
+      --teal-muted: #4e786f;
+      --rust-warning: #7a3222;
+      
+      --parchment: #ede7d5;
+      --cream-muted: #b8bfae;
+      --stone-gray: #78857a;
+      
+      --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'IBM Plex Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-void);
+      color: var(--parchment);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(214, 151, 56, 0.04) 0%, transparent 60%),
+        linear-gradient(rgba(18, 25, 21, 0.25) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(18, 25, 21, 0.25) 1px, transparent 1px);
+      background-size: 100% 100%, 36px 36px, 36px 36px;
+    }
+
+    .mono {
+      font-family: var(--font-mono);
+      letter-spacing: 0.04em;
+    }
+
+    /* Classified Header */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(7, 10, 8, 0.94);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-dark);
+      padding: 0.85rem 1.5rem;
+    }
+
+    .header-inner {
+      max-width: 1240px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    .brand-insignia {
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--amber-glow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(214, 151, 56, 0.08);
+      box-shadow: 0 0 12px rgba(214, 151, 56, 0.15);
+      border-radius: 2px;
+      padding: 2px;
+    }
+
+    .brand-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+      color: var(--parchment);
+    }
+
+    .brand-sub {
+      font-size: 0.7rem;
+      color: var(--stone-gray);
+      text-transform: uppercase;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.85rem;
+      border: 1px solid var(--border-steel);
+      background: rgba(18, 25, 21, 0.6);
+      font-size: 0.72rem;
+      color: var(--teal-muted);
+      border-radius: 2px;
+    }
+
+    .beacon {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--amber-glow);
+      box-shadow: 0 0 8px var(--amber-glow);
+    }
+
+    /* Container Structure */
+    .container {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 5rem 1.5rem;
+    }
+
+    /* Hero Section */
+    .hero {
+      padding-top: 3.5rem;
+      padding-bottom: 4.5rem;
+      border-bottom: 1px solid var(--border-dark);
+      position: relative;
+    }
+
+    .classification-tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--amber-glow);
+      margin-bottom: 1.25rem;
+      font-weight: 600;
+      border-left: 2px solid var(--amber-glow);
+      padding-left: 0.5rem;
+    }
+
+    .hero-heading {
+      font-size: clamp(2.1rem, 4.8vw, 3.8rem);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      color: var(--parchment);
+      margin-bottom: 1.5rem;
+      max-width: 980px;
+    }
+
+    .hero-heading span {
+      color: var(--amber-glow);
+      text-shadow: 0 0 20px rgba(214, 151, 56, 0.2);
+    }
+
+    .hero-lead {
+      font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+      color: var(--cream-muted);
+      max-width: 840px;
+      line-height: 1.6;
+      margin-bottom: 3rem;
+      font-weight: 400;
+    }
+
+    /* Hardware Metrics Grid */
+    .metrics-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .metric-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border-dark);
+      border-top: 2px solid var(--border-steel);
+      padding: 1.5rem;
+      position: relative;
+      transition: all 0.2s ease;
+    }
+
+    .metric-panel:hover {
+      border-top-color: var(--amber-glow);
+      background: #1a251f;
+    }
+
+    .metric-number {
+      font-size: 2.3rem;
+      font-weight: 700;
+      color: var(--parchment);
+      line-height: 1.1;
+      margin-bottom: 0.35rem;
+    }
+
+    .metric-title {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--amber-glow);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.4rem;
+    }
+
+    .metric-detail {
+      font-size: 0.8rem;
+      color: var(--stone-gray);
+      line-height: 1.45;
+    }
+
+    /* Section Headers */
+    .section-eyebrow {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--teal-muted);
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      display: block;
+    }
+
+    .section-headline {
+      font-size: clamp(1.75rem, 3.2vw, 2.5rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--parchment);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-description {
+      font-size: 1.05rem;
+      color: var(--cream-muted);
+      max-width: 780px;
+      line-height: 1.55;
+    }
+
+    /* Comparison Table */
+    .table-frame {
+      background: var(--bg-asphalt);
+      border: 1px solid var(--border-dark);
+      border-radius: 2px;
+      overflow-x: auto;
+      margin-top: 2.25rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+
+    th {
+      background: var(--bg-card);
+      padding: 1.1rem 1.25rem;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--parchment);
+      border-bottom: 2px solid var(--border-steel);
+      font-weight: 700;
+    }
+
+    td {
+      padding: 1.25rem;
+      border-bottom: 1px solid var(--border-dark);
+      vertical-align: top;
+      line-height: 1.5;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .col-vector {
+      font-weight: 700;
+      color: var(--parchment);
+      width: 22%;
+    }
+
+    .col-cloud {
+      color: #d1978a;
+      background: rgba(122, 50, 34, 0.06);
+      width: 39%;
+      border-right: 1px solid var(--border-dark);
+    }
+
+    .col-apex {
+      color: var(--parchment);
+      background: rgba(39, 79, 70, 0.12);
+      border-left: 2px solid var(--amber-glow);
+      width: 39%;
+      font-weight: 500;
+    }
+
+    /* Official Source Citations Box */
+    .citations-box {
+      margin-top: 1.5rem;
+      padding: 1.25rem 1.5rem;
+      background: var(--bg-asphalt);
+      border: 1px solid var(--border-dark);
+      border-left: 3px solid var(--teal-muted);
+    }
+
+    .citations-header {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--amber-glow);
+      margin-bottom: 0.75rem;
+    }
+
+    .citations-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 0.75rem 1.25rem;
+      list-style: none;
+    }
+
+    .citation-link {
+      color: var(--cream-muted);
+      text-decoration: none;
+      font-size: 0.76rem;
+      line-height: 1.45;
+      display: inline-block;
+      transition: color 0.15s ease;
+    }
+
+    .citation-link:hover {
+      color: var(--amber-glow);
+      text-decoration: underline;
+    }
+
+    .citation-link strong {
+      color: var(--parchment);
+    }
+
+    /* Municipal Integration Console */
+    .console-module {
+      background: var(--bg-asphalt);
+      border: 1px solid var(--border-dark);
+      margin-top: 2.25rem;
+    }
+
+    .console-nav-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      background: var(--bg-void);
+      border-bottom: 1px solid var(--border-dark);
+    }
+
+    .nav-btn {
+      background: transparent;
+      border: none;
+      padding: 1.15rem 1rem;
+      color: var(--stone-gray);
+      font-family: inherit;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      text-align: left;
+      border-right: 1px solid var(--border-dark);
+      transition: all 0.2s ease;
+    }
+
+    .nav-btn:last-child {
+      border-right: none;
+    }
+
+    .nav-btn.active {
+      background: var(--bg-asphalt);
+      color: var(--parchment);
+      border-top: 3px solid var(--amber-glow);
+    }
+
+    .nav-btn span.tag {
+      font-size: 0.68rem;
+      color: var(--teal-muted);
+      font-family: var(--font-mono);
+      text-transform: uppercase;
+    }
+
+    .console-view {
+      padding: 2.5rem;
+      min-height: 280px;
+    }
+
+    .console-split {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 2.5rem;
+      align-items: start;
+    }
+
+    .console-main h4 {
+      font-size: 1.35rem;
+      letter-spacing: -0.01em;
+      color: var(--parchment);
+      margin-bottom: 0.75rem;
+      font-weight: 700;
+    }
+
+    .console-main p {
+      color: var(--cream-muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 1.35rem;
+    }
+
+    .spec-row {
+      display: flex;
+      align-items: baseline;
+      gap: 0.75rem;
+      margin-bottom: 0.55rem;
+      font-size: 0.88rem;
+    }
+
+    .spec-arrow {
+      color: var(--amber-glow);
+      font-weight: 700;
+    }
+
+    .telemetry-board {
+      background: var(--bg-void);
+      border: 1px solid var(--border-steel);
+      padding: 1.35rem;
+    }
+
+    .board-header {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-dark);
+      padding-bottom: 0.5rem;
+      margin-bottom: 1rem;
+      font-size: 0.72rem;
+      color: var(--teal-muted);
+    }
+
+    .board-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.65rem;
+      font-size: 0.8rem;
+    }
+
+    .board-label {
+      color: var(--stone-gray);
+    }
+
+    .board-val {
+      color: var(--parchment);
+      font-weight: 600;
+    }
+
+    /* Mechanical Schematic */
+    .schematic-wrapper {
+      background: var(--bg-asphalt);
+      border: 1px solid var(--border-dark);
+      padding: 2.5rem;
+      margin-top: 2.25rem;
+    }
+
+    .schematic-columns {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .shield-layer {
+      background: var(--bg-void);
+      border: 1px solid var(--border-dark);
+      padding: 1.35rem;
+      border-left: 3px solid var(--teal-surveillance);
+    }
+
+    .layer-index {
+      font-size: 0.68rem;
+      color: var(--amber-glow);
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .layer-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--parchment);
+      margin-bottom: 0.5rem;
+    }
+
+    .layer-body {
+      font-size: 0.85rem;
+      color: var(--cream-muted);
+      line-height: 1.45;
+    }
+
+    /* Tiers Matrix */
+    .tiers-layout {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2.25rem;
+    }
+
+    .tier-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-dark);
+      padding: 2.25rem 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+    }
+
+    .tier-box.flagship {
+      border-color: var(--amber-dim);
+      background: linear-gradient(180deg, #1d2720 0%, var(--bg-card) 100%);
+    }
+
+    .flagship-ribbon {
+      position: absolute;
+      top: -12px;
+      right: 1.5rem;
+      background: var(--amber-glow);
+      color: #070a08;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      padding: 0.25rem 0.65rem;
+    }
+
+    .tier-heading {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--parchment);
+      margin-bottom: 0.35rem;
+    }
+
+    .tier-classification {
+      font-size: 0.78rem;
+      color: var(--teal-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 1.25rem;
+      font-weight: 600;
+    }
+
+    .tier-list {
+      list-style: none;
+      margin: 1.5rem 0;
+    }
+
+    .tier-list li {
+      font-size: 0.85rem;
+      color: var(--cream-muted);
+      padding: 0.45rem 0;
+      border-bottom: 1px solid rgba(42, 61, 50, 0.4);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .tier-list li:last-child {
+      border-bottom: none;
+    }
+
+    .tier-list li::before {
+      content: "▪";
+      color: var(--amber-glow);
+      font-size: 0.75rem;
+    }
+
+    .tier-footer {
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--border-dark);
+      font-size: 0.72rem;
+      color: var(--stone-gray);
+    }
+
+    /* Outro Statement */
+    .mission-outro {
+      text-align: center;
+      padding: 5.5rem 1.5rem;
+      border-top: 1px solid var(--border-dark);
+      background: linear-gradient(180deg, var(--bg-void) 0%, #0d1410 100%);
+    }
+
+    .outro-headline {
+      font-size: clamp(1.85rem, 3.8vw, 2.8rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--parchment);
+      margin-bottom: 1rem;
+    }
+
+    .outro-body {
+      font-size: 1.15rem;
+      color: var(--cream-muted);
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    /* Master Footer */
+    footer {
+      border-top: 1px solid var(--border-dark);
+      background: var(--bg-void);
+      padding: 2.5rem 1.5rem;
+      color: var(--stone-gray);
+      font-size: 0.78rem;
+    }
+
+    .footer-content {
+      max-width: 1240px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .footer-mark {
+      color: var(--parchment);
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+
+    @media (max-width: 768px) {
+      .console-nav-bar {
+        grid-template-columns: 1fr 1fr;
+      }
+      .console-split {
+        grid-template-columns: 1fr;
+        gap: 1.75rem;
+      }
+      .header-inner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+      }
+      .citations-list {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sticky Operational Header -->
+  <header>
+    <div class="header-inner">
+      <div class="brand-wrap">
+        <!-- Enclosed Delta & Omega Vector Insignia -->
+        <div class="brand-insignia">
+          <svg viewBox="0 0 100 100" width="28" height="28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Outer Delta Triangle (APEX Vector) -->
+            <polygon points="50,10 92,86 8,86" stroke="#d69738" stroke-width="6" stroke-linejoin="round" fill="rgba(214, 151, 56, 0.08)"/>
+            <!-- Inner Omega Symbol (Ohms / Resistance / Final Continuity) -->
+            <path d="M 36,73 L 43,73 C 43,73 39,63 39,54 C 39,44 44,39 50,39 C 56,39 61,44 61,54 C 61,63 57,73 57,73 L 64,73" 
+                  stroke="#ede7d5" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div>
+          <div class="brand-title">Project APEX</div>
+          <div class="brand-sub mono">Archival Public Extension Node</div>
+        </div>
+      </div>
+      <div class="status-pill mono">
+        <span class="beacon"></span>
+        <span>DEFENSE DIRECTIVE 3020.26 STANDARDS</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="container hero">
+    <span class="classification-tag mono">Sovereign Municipal Infrastructure Oracle</span>
+    <h1 class="hero-heading">When Centralized Systems Fail, <span>Local Intelligence</span> Must Survive.</h1>
+    <p class="hero-lead">
+      An off-grid, EMP-hardened computing vault and autonomous neural oracle. Engineered to maintain continuous water treatment stoichiometry, pharmaceutical triage, microgrid telemetry, and civil command through structural blackout and supply chain severance.
+    </p>
+
+    <!-- Key Metrics / Proof Points -->
+    <div class="metrics-bar">
+      <div class="metric-panel">
+        <div class="metric-number mono">100%</div>
+        <div class="metric-title">Faraday Enclosure</div>
+        <div class="metric-detail">Continuous Beryllium-Copper spring gaskets with certified MIL-STD-188-125 EMP attenuation up to 80 dB.</div>
+      </div>
+      <div class="metric-panel">
+        <div class="metric-number mono">0 kW</div>
+        <div class="metric-title">External Grid Demand</div>
+        <div class="metric-detail">Dedicated solar photovoltaic interface and integrated LiFePO4 battery reserve for infinite off-grid duty cycles.</div>
+      </div>
+      <div class="metric-panel">
+        <div class="metric-number mono">&lt;15 ms</div>
+        <div class="metric-title">Local Neural Inference</div>
+        <div class="metric-detail">Fully quantized, local-compute operational intelligence. Zero reliance on satellite links or cloud servers.</div>
+      </div>
+      <div class="metric-panel">
+        <div class="metric-number mono">30–90 D</div>
+        <div class="metric-title">Autonomous Buffer</div>
+        <div class="metric-detail">Sustained municipal water balancing, medication substitution, and communications without outside supply feeds.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- The Problem / Vulnerability Assessment -->
+  <section class="container" style="padding-top: 0;">
+    <div>
+      <span class="section-eyebrow mono">Macro Vulnerability Assessment</span>
+      <h2 class="section-headline">The Centralized Vulnerability Gap</h2>
+      <p class="section-description">
+        Federal risk assessments confirm that modern civil survival depends on fragile just-in-time logistics and distant hyperscale data centers that fail within hours of regional grid or communications collapse.
+      </p>
+    </div>
+
+    <div class="table-frame">
+      <table>
+        <thead>
+          <tr>
+            <th class="mono">Operational Vector</th>
+            <th class="mono">Centralized Cloud Architecture (Current Baseline)</th>
+            <th class="mono">Project APEX Autonomous Standard</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="col-vector">Power &amp; High-Altitude EMP / CME Event</td>
+            <td class="col-cloud">Catastrophic semiconductor latch-up and E1/E2 surge burnout across regional substations. Unshielded SCADA controllers fail instantly.</td>
+            <td class="col-apex">Dual-layer Faraday chamber with EMP-rated transient suppression, isolated neutral bus, and independent solar-recharged power cell.</td>
+          </tr>
+          <tr>
+            <td class="col-vector">Municipal Water Disinfection &amp; Testing</td>
+            <td class="col-cloud">SCADA telemetry requires commercial cloud servers; chemical dosing ceases when municipal engineers lose cloud access and supply runs dry.</td>
+            <td class="col-apex">Air-gapped stoichiometric calculators, emergency calcium hypochlorite dosing matrices, and localized aquifer drawdown telemetry.</td>
+          </tr>
+          <tr>
+            <td class="col-vector">Pharmaceutical Inventory &amp; Critical Care</td>
+            <td class="col-cloud">Hospitals lock down as cloud-hosted Electronic Health Records (EHR) and computerized drug dispensing cabinets go dark within 12 hours.</td>
+            <td class="col-apex">Complete local offline medical compendium with cross-indexed bio-equivalent formulation swaps and tactical field triage protocols.</td>
+          </tr>
+          <tr>
+            <td class="col-vector">Civil Telecommunications &amp; Routing</td>
+            <td class="col-cloud">Cellular towers exhaust diesel backups within 48–72 hours; fiber backbones suffer packet fragmentation and regional routing collapse.</td>
+            <td class="col-apex">Integrated tactical VHF/UHF audio transcription, AX.25 packet radio routing, and off-grid LoRa mesh gateways up to 25-mile radius.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Official Clickable Source Documentation Box -->
+    <div class="citations-box">
+      <div class="citations-header mono">STATUTORY &amp; SCIENTIFIC CITATIONS (OFFICIAL REPORTS)</div>
+      <ul class="citations-list">
+        <li>
+          <a class="citation-link" href="https://www.firstempcommission.org/" target="_blank" rel="noopener noreferrer">
+            › <strong>Congressional EMP Commission Executive Report</strong><br>
+            Assessment of the Threat to the United States from High-Altitude EMP (Title 10, Sec. 182)
+          </a>
+        </li>
+        <li>
+          <a class="citation-link" href="https://www.nerc.com/pa/RAPA/ra/Pages/default.aspx" target="_blank" rel="noopener noreferrer">
+            › <strong>NERC Reliability Assessment</strong><br>
+            Grid Inelasticity, Extreme Weather Vulnerability &amp; Inverter-Based Resource Shortfalls
+          </a>
+        </li>
+        <li>
+          <a class="citation-link" href="https://www.esd.whs.mil/Directives/issuances/dodd/" target="_blank" rel="noopener noreferrer">
+            › <strong>DOD Directive 3020.26</strong><br>
+            Department of Defense Continuity Policy &amp; Defense Support of Civil Authorities (DSCA)
+          </a>
+        </li>
+        <li>
+          <a class="citation-link" href="https://www.epa.gov/ground-water-and-drinking-water" target="_blank" rel="noopener noreferrer">
+            › <strong>EPA National Primary Drinking Water Standards</strong><br>
+            Emergency SCADA Disinfection Protocols &amp; Resilient Water Distribution Guidelines
+          </a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Interactive Municipal Integrations -->
+  <section class="container" style="padding-top: 0;">
+    <div>
+      <span class="section-eyebrow mono">Active Municipal Integration</span>
+      <h2 class="section-headline">What APEX Solves in the Field</h2>
+      <p class="section-description">
+        Explore how the APEX neural oracle interfaces directly with mission-critical community utilities during prolonged civil disconnection.
+      </p>
+    </div>
+
+    <div class="console-module">
+      <div class="console-nav-bar">
+        <button class="nav-btn active" onclick="renderConsole(0, this)">
+          <span class="tag">SYS-01</span>
+          <span>Water &amp; Aquifers</span>
+        </button>
+        <button class="nav-btn" onclick="renderConsole(1, this)">
+          <span class="tag">SYS-02</span>
+          <span>Emergency Medicine</span>
+        </button>
+        <button class="nav-btn" onclick="renderConsole(2, this)">
+          <span class="tag">SYS-03</span>
+          <span>Microgrid Control</span>
+        </button>
+        <button class="nav-btn" onclick="renderConsole(3, this)">
+          <span class="tag">SYS-04</span>
+          <span>Tactical Mesh Comms</span>
+        </button>
+      </div>
+
+      <div class="console-view" id="console-display">
+        <!-- Rendered by JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Mechanical & Electrical Architecture -->
+  <section class="container" style="padding-top: 0;">
+    <div>
+      <span class="section-eyebrow mono">Mechanical &amp; Electrical Architecture</span>
+      <h2 class="section-headline">Engineered Against Kinetic &amp; Pulse Threats</h2>
+      <p class="section-description">
+        Every APEX node is assembled inside a heavy-gauge, RF-shielded transport housing designed to withstand extreme electromagnetic fields, seismic shockwaves, and environmental contamination.
+      </p>
+    </div>
+
+    <div class="schematic-wrapper">
+      <div class="schematic-columns">
+        <div class="shield-layer">
+          <div class="layer-index mono">LAYER 01 // OUTER HULL</div>
+          <div class="layer-title">Double-Shielded Faraday Hull</div>
+          <div class="layer-body">5052-H32 aluminum-alloy containment shell lined with conductive copper-nickel mesh and beryllium-copper finger gaskets to eliminate RF ingress.</div>
+        </div>
+        <div class="shield-layer">
+          <div class="layer-index mono">LAYER 02 // TRANSIENT DEFENSE</div>
+          <div class="layer-title">Solid-State Surge Arrestor Array</div>
+          <div class="layer-body">Sub-nanosecond Metal Oxide Varistors (MOVs) and gas-discharge tubes clamp fast E1 pulses before foreign current reaches internal logic boards.</div>
+        </div>
+        <div class="shield-layer">
+          <div class="layer-index mono">LAYER 03 // COMPUTE CORE</div>
+          <div class="layer-title">High-Bandwidth Unified Memory Oracle</div>
+          <div class="layer-body">Shock-isolated high-density compute engine running local quantized open-weights models and specialized engineering/medical corpora at zero network latency.</div>
+        </div>
+        <div class="shield-layer">
+          <div class="layer-index mono">LAYER 04 // POWER INDEPENDENCE</div>
+          <div class="layer-title">Modular LiFePO4 Battery Reserve</div>
+          <div class="layer-body">Internal lithium iron phosphate cells paired with dual MPPT solar controllers and cold-start manual cranking bypass for continuous operational readiness.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Scalable Packages / Tiers -->
+  <section class="container" style="padding-top: 0;">
+    <div>
+      <span class="section-eyebrow mono">Deployment Configurations</span>
+      <h2 class="section-headline">Scalable Municipal Packages</h2>
+      <p class="section-description">
+        From rapid-deployment field packs for disaster response teams to subterranean hardened clusters for county emergency operations centers.
+      </p>
+    </div>
+
+    <div class="tiers-layout">
+      <div class="tier-box">
+        <div>
+          <div class="tier-heading">Tactical Core</div>
+          <div class="tier-classification mono">Tier 1 // Rapid Incident Unit</div>
+          <p class="layer-body">Lightweight, high-mobility manpack unit engineered for search-and-rescue teams, mobile paramedicine, and forward incident commanders.</p>
+          <ul class="tier-list">
+            <li>Sub-25 lb. Pelican Air transport case</li>
+            <li>64 GB Unified Memory local AI engine</li>
+            <li>1.2 kWh integrated LiFePO4 battery</li>
+            <li>Tactical handheld radio interface</li>
+            <li>Full offline medical &amp; triage library</li>
+          </ul>
+        </div>
+        <div class="tier-footer mono">FIELD READY // 5-MIN DEPLOYMENT</div>
+      </div>
+
+      <div class="tier-box flagship">
+        <div class="flagship-ribbon mono">FLAGSHIP</div>
+        <div>
+          <div class="tier-heading">Municipal Node</div>
+          <div class="tier-classification mono">Tier 2 // City Hall &amp; Water District</div>
+          <p class="layer-body">Stationary hardened terminal designed to preserve municipal governance, local water facility chemistry, and regional public safety telemetry.</p>
+          <ul class="tier-list">
+            <li>MIL-STD-188-125 EMP hardened cabinet</li>
+            <li>128 GB Unified Memory multi-model core</li>
+            <li>3.6 kWh expandable LiFePO4 power bus</li>
+            <li>SCADA water &amp; electrical diagnostic bridge</li>
+            <li>25-mile encrypted VHF packet radio gateway</li>
+          </ul>
+        </div>
+        <div class="tier-footer mono">MUNICIPAL STANDARD // UTILITY COMPLIANT</div>
+      </div>
+
+      <div class="tier-box">
+        <div>
+          <div class="tier-heading">County Hub</div>
+          <div class="tier-classification mono">Tier 3 // Regional EOC Multi-Rack</div>
+          <p class="layer-body">Redundant compute cluster for county Emergency Operations Centers, regional trauma hubs, and multi-agency regional coordination.</p>
+          <ul class="tier-list">
+            <li>Dual-rack EMP vault enclosure</li>
+            <li>Multi-node parallel neural compute</li>
+            <li>10.8 kWh power storage + solar tie-in</li>
+            <li>County-wide radio repeaters &amp; mesh trunk</li>
+            <li>Full regional GIS &amp; structural engineering models</li>
+          </ul>
+        </div>
+        <div class="tier-footer mono">REGIONAL COMMAND // COOP DIRECTIVE</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Outro Mission Statement -->
+  <section class="mission-outro">
+    <div class="container" style="padding: 0;">
+      <span class="classification-tag mono">Civil Continuity Guaranteed</span>
+      <h2 class="outro-headline">Built for Resilience. Engineered for Reality.</h2>
+      <p class="outro-body">
+        The future belongs to the communities that secure their critical intelligence before the public grid is tested.
+      </p>
+    </div>
+  </section>
+
+  <!-- Master Footer -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-mark mono">PROJECT APEX // SOVEREIGN MUNICIPAL NODES</div>
+      <div class="mono" style="color: var(--amber-glow); font-weight: 700;">
+        Powered by Matthews Operations Lab
+      </div>
+      <div class="mono">CONFIDENTIAL BRIEFING DOCUMENT // OCT 2026</div>
+    </div>
+  </footer>
+
+  <script>
+    const systemDatabase = [
+      {
+        title: "Autonomous Municipal Water Stoichiometry",
+        desc: "When regional water treatment cloud telemetry goes dark, APEX recalculates chemical dosing based on localized wellhead sensor inputs. Prevents chlorine gas underdosing or caustic chemical burns across municipal pipelines.",
+        specs: [
+          "Real-time calcium hypochlorite & alum dosage balancing",
+          "Aquifer salinity intrusion & drawdown rate tracking",
+          "Offline bacteriological kill-rate verification tables",
+          "Automated backwash scheduling for gravity filtration"
+        ],
+        telemetry: [
+          { label: "Target Effluent Turbidity", val: "< 0.15 NTU" },
+          { label: "Free Chlorine Residual Target", val: "1.8 mg/L" },
+          { label: "Aquifer Head Pressure", val: "48.2 PSI [NOMINAL]" },
+          { label: "Dosing Logic Status", val: "AUTONOMOUS LOCAL" }
+        ]
+      },
+      {
+        title: "Emergency Pharmaceutical & Triage Matrix",
+        desc: "When hospital EHR servers lock up, APEX provides instant cross-referenced pharmacological substitution formulas for critical medications—including antibiotics, cardiovascular stabilizers, and insulin preservation protocols.",
+        specs: [
+          "Complete offline FDA & WHO formulary cross-index",
+          "Weight-adjusted pediatric and geriatric dosing calculators",
+          "Mass-casualty START / SALT triage decision trees",
+          "Alternative compounding guides for expired stockpiles"
+        ],
+        telemetry: [
+          { label: "Formulary Database", val: "148,000 MONOGRAPHS" },
+          { label: "Bio-Equivalence Index", val: "ACTIVE / VERIFIED" },
+          { label: "Controlled Substance Audit", val: "HARD-ENCRYPTED" },
+          { label: "Local Diagnostic Engine", val: "ONLINE [12 MS]" }
+        ]
+      },
+      {
+        title: "Substation Microgrid Load Shedding",
+        desc: "Coordinates isolated solar microgrids and diesel turbine reserves to preserve critical community circuits—prioritizing water booster stations, emergency surgical suites, and public radio transmitters over non-essential loads.",
+        specs: [
+          "Sub-cycle frequency collapse detection & mitigation",
+          "Automated breaker trip sequencing for priority tiers",
+          "Battery State-of-Health (SOH) thermodynamic monitoring",
+          "Cold-load pickup calculations to prevent transformer saturation"
+        ],
+        telemetry: [
+          { label: "Grid Tie State", val: "ISLANDED [ISOLATED]" },
+          { label: "Bus Frequency", val: "60.02 HZ [STABLE]" },
+          { label: "Priority 1 Health", val: "100% ENERGIZED" },
+          { label: "Critical Runtime Remaining", val: "720+ HRS [SOLAR]" }
+        ]
+      },
+      {
+        title: "Encrypted Civil Mesh Telecommunications",
+        desc: "Bypasses commercial telecommunication towers entirely. Routes tactical emergency dispatch packets across high-frequency radio and decentralized LoRa mesh transceivers across county boundaries.",
+        specs: [
+          "Automated voice-to-text transcriptions for dispatch logs",
+          "AX.25 packet radio repeater bridging for legacy fleets",
+          "Encrypted civilian distress beacon telemetry",
+          "Air-gapped peer synchronization across adjacent APEX nodes"
+        ],
+        telemetry: [
+          { label: "Mesh Topology", val: "AD-HOC PEER-TO-PEER" },
+          { label: "Active Regional Relays", val: "14 STATIONS" },
+          { label: "Effective Range", val: "25 MILES [VHF]" },
+          { label: "Zero-Knowledge Encryption", val: "AES-256 / SHA-3" }
+        ]
+      }
+    ];
+
+    function renderConsole(idx, tabElement) {
+      document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+      tabElement.classList.add('active');
+
+      const data = systemDatabase[idx];
+      const container = document.getElementById('console-display');
+
+      const specsContent = data.specs.map(item => `
+        <div class="spec-row">
+          <span class="spec-arrow">›</span>
+          <span>${item}</span>
+        </div>
+      `).join('');
+
+      const telemetryContent = data.telemetry.map(row => `
+        <div class="board-row">
+          <span class="board-label mono">${row.label}</span>
+          <span class="board-val mono">${row.val}</span>
+        </div>
+      `).join('');
+
+      container.innerHTML = `
+        <div class="console-split">
+          <div class="console-main">
+            <h4>${data.title}</h4>
+            <p>${data.desc}</p>
+            <div>${specsContent}</div>
+          </div>
+          <div class="telemetry-board">
+            <div class="board-header mono">
+              <span>ACTIVE TELEMETRY STREAM</span>
+              <span>LIVE</span>
+            </div>
+            ${telemetryContent}
+          </div>
+        </div>
+      `;
+    }
+
+    // Default load first tab
+    renderConsole(0, document.querySelector('.nav-btn'));
+  </script>
+</body>
+</html>
